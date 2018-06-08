@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CatchBasinSurveilence</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="date">Date</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="num_of_larvae"># of Larvae</string>
+    <string name="stage_of_development">Stage of Development</string>
+    <string name="get_location_data">Get Location Data</string>
+    <string name="show_coordinates">Show Coordinates</string>
+    <string name="latitude">Latitude</string>
+    <string name="longtitude">Longtitude</string>
+</resources>
