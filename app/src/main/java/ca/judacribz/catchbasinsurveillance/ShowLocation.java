@@ -9,14 +9,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -26,8 +24,10 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static ca.judacribz.catchbasinsurveillance.R.layout.activity_show_location;
+import static ca.judacribz.catchbasinsurveillance.util.UI.*;
 
 public class ShowLocation extends AppCompatActivity implements LocationListener {
 
@@ -46,19 +46,21 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
     EditText etLat;
     @BindView(R.id.et_lon)
     EditText etLon;
+    @BindView(R.id.et_numLarvae)
+    EditText etNumLarvae;
 
-    @BindView(R.id.spr_numLarvae)
-    Spinner sprNumLarvae;
     @BindView(R.id.spr_devStage)
     Spinner sprDevStage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_location);
-        ButterKnife.bind(this);
+        setInitView(this, activity_show_location, R.string.login,  false);
 
         setDate();
+        setSpinnerWithArray(this, R.array.life_stages, sprDevStage);
+
+
         verifyGeolocationPermission();
     }
 
@@ -113,12 +115,15 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
         String recommendedProvider = locationManager.getBestProvider(criteria,
                 true);
 
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(recommendedProvider,
+        if (   checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+
+            locationManager.requestLocationUpdates(
+                    recommendedProvider,
                     3000,
                     1,
-                    this);
+                    this
+            );
         }
     }
 
@@ -154,15 +159,6 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
         updateUI(address);
     }
 
-    private void updateUI(Address address) {
-        if (address != null) {
-            etAddress.setText(address.getAddressLine(0));
-            etCity.setText(address.getLocality());
-            etLat.setText(String.valueOf(lat));
-            etLon.setText(String.valueOf(lon));
-        }
-    }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
@@ -177,11 +173,23 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
 
     @OnClick(R.id.btn_showCoords)
     public void showCoordinates() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        onLocationChanged(lastKnownLocation);
-        lat = lastKnownLocation.getLatitude();
-        lon = lastKnownLocation.getLongitude();
-//        }
+        if (   ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            onLocationChanged(lastKnownLocation);
+            lat = lastKnownLocation.getLatitude();
+            lon = lastKnownLocation.getLongitude();
+
+            updateUI(geocode(lat, lon));
+        }
+    }
+
+    private void updateUI(Address address) {
+        if (address != null) {
+            etAddress.setText(address.getAddressLine(0).split(getString(R.string.comma))[0]);
+            etCity.setText(address.getLocality());
+            etLat.setText(String.valueOf(lat));
+            etLon.setText(String.valueOf(lon));
+        }
     }
 }

@@ -7,7 +7,9 @@
     android:padding="10dp"
     android:orientation="vertical"
     tools:context=".ShowLocation">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/partial_titlebar" />
     <EditText
         android:id="@+id/et_samplingDate"
         android:layout_width="match_parent"
@@ -41,23 +43,32 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:inputType="numberDecimal"
-        android:hint="@string/longtitude"/>
+        android:hint="@string/longitude"/>
 
-    <Spinner
-        android:id="@+id/spr_numLarvae"
+    <EditText
+        android:id="@+id/et_numLarvae"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="date"/>
+        android:inputType="number"
+        android:text="@string/zero"
+        android:hint="@string/num_of_larvae"/>
 
     <Spinner
         android:id="@+id/spr_devStage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="date"/>
+        android:inputType="date"
+        android:textColor="@color/colorText" />
 
     <Button
         android:id="@+id/btn_showCoords"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="@string/show_coordinates"/>
+        android:text="@string/update_location_info"/>
+
+    <Button
+        android:id="@+id/btn_addData"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/add_data"/>
 </LinearLayout>

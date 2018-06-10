@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "1023280607731",
+    "firebase_url": "https://maps-1528388746490.firebaseio.com",
+    "project_id": "maps-1528388746490",
+    "storage_bucket": "maps-1528388746490.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023280607731:android:825ae6716a690446",
+        "android_client_info": {
+          "package_name": "ca.judacribz.catchbasinsurveilence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023280607731-mmlmg8kp6t0k9efcnd9bmn6u9rvdrp04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.judacribz.catchbasinsurveilence",
+            "certificate_hash": "69745b5dbbeba37e811ef6b4f692093eb8c44740"
+          }
+        },
+        {
+          "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyQ1gIFCmE9mZfA3aaWYe5lqxSIZslw54"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023280607731:android:dfcafb3465645741",
+        "android_client_info": {
+          "package_name": "ca.judacribz.catchbasinsurveillance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023280607731-f15q7rttu554tjfshic015a5o37pi2i9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.judacribz.catchbasinsurveillance",
+            "certificate_hash": "69745b5dbbeba37e811ef6b4f692093eb8c44740"
+          }
+        },
+        {
+          "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyQ1gIFCmE9mZfA3aaWYe5lqxSIZslw54"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023280607731-63i8j3mmikd3ibsl6t6bb8vedf50lm1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
