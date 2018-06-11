@@ -26,8 +26,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import ca.judacribz.mosquitomanager.models.CB;
+import ca.judacribz.mosquitomanager.models.DataHelper;
 
 import static ca.judacribz.mosquitomanager.R.layout.activity_catch_basin;
+import static ca.judacribz.mosquitomanager.firebase.Database.addCBFirebase;
 import static ca.judacribz.mosquitomanager.util.UI.*;
 
 public class CatchBasin extends AppCompatActivity implements LocationListener {
@@ -36,6 +39,10 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
     private LocationManager locationManager;
 
     private Double lon, lat;
+
+    private EditText[] forms;
+
+    private DataHelper dataHelper;
 
     @BindView(R.id.et_samplingDate)
     EditText etSamplingDate;
@@ -58,9 +65,11 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setInitView(this, activity_catch_basin, R.string.login,  true);
 
+        forms = new EditText[]{etSamplingDate, etCity, etAddress, etNumLarvae};
+        dataHelper = new DataHelper(this);
+
         setDate();
         setSpinnerWithArray(this, R.array.life_stages, sprDevStage);
-
 
         verifyGeolocationPermission();
     }
@@ -203,6 +212,26 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
             etCity.setText(address.getLocality());
             etLat.setText(String.valueOf(lat));
             etLon.setText(String.valueOf(lon));
+        }
+    }
+
+
+    @OnClick(R.id.btn_addData)
+    public void addData() {
+        if (validateForm(this, forms)) {
+
+            CB cb = new CB(
+                    getTextString(forms[0]),
+                    getTextString(forms[1]),
+                    getTextString(forms[2]),
+                    getTextInt(forms[3]),
+                    sprDevStage.getSelectedItem().toString()
+            );
+            if (dataHelper.addWorkout(cb)) {
+                addCBFirebase(cb);
+            } else {
+                Toast.makeText(this, "not Added", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

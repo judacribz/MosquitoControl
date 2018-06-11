@@ -41,6 +41,7 @@ import butterknife.OnClick;
 
 import static ca.judacribz.mosquitomanager.R.layout.activity_login;
 import static ca.judacribz.mosquitomanager.firebase.Authentication.*;
+import static ca.judacribz.mosquitomanager.firebase.Database.setUserInfo;
 import static ca.judacribz.mosquitomanager.util.UI.setInitView;
 
 public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
@@ -170,7 +171,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
                     Toast.LENGTH_SHORT
             ).show();
 
-//            setUserInfo(this);
+            setUserInfo(this);
 
 
             if (linkGoogle) {
