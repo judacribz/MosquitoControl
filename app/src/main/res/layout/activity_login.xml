@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Main">
+    tools:context=".Login">
 
     <!-- Resources:
          https://thenounproject.com/term/muscle/15255/ -->
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/partial_titlebar" />
+        layout="@layout/part_titlebar" />
 
     <!-- Google Sign-In Button-->
     <com.google.android.gms.common.SignInButton
@@ -30,8 +30,9 @@
         android:id="@+id/iv_login_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btn_google_sign_in"
         android:layout_above="@id/et_email"
+        android:layout_below="@id/btn_google_sign_in"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/cd_login_img"
         android:tint="@color/colorBg"/>
@@ -41,8 +42,9 @@
         android:id="@+id/iv_sign_up_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btn_google_sign_in"
         android:layout_above="@id/et_email"
+        android:layout_below="@id/btn_google_sign_in"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/cd_sign_up_img"
         android:tint="@color/colorBg"
@@ -113,6 +115,7 @@
             android:id="@+id/tv_sign_up_quest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingEnd="5dp"
             android:text="@string/txt_no_account"
             android:textSize="15sp"/>
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mosquito Management</string>
+    <string name="app_name">Mosquito Manager</string>
 
     <string name="catch_basin_surveillance">Catch Basin Surveillance</string>
     <string name="login">login</string>

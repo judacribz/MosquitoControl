@@ -1,4 +1,4 @@
-package ca.judacribz.catchbasinsurveillance;
+package ca.judacribz.mosquitomanager;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package ca.judacribz.catchbasinsurveillance;
+package ca.judacribz.mosquitomanager;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

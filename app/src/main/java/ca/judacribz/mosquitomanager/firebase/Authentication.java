@@ -1,4 +1,4 @@
-package ca.judacribz.catchbasinsurveillance.firebase;
+package ca.judacribz.mosquitomanager.firebase;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
-import ca.judacribz.catchbasinsurveillance.R;
+import ca.judacribz.mosquitomanager.R;
 
 
 public class Authentication {

@@ -1,4 +1,4 @@
-package ca.judacribz.catchbasinsurveillance;
+package ca.judacribz.mosquitomanager;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -26,10 +27,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static ca.judacribz.catchbasinsurveillance.R.layout.activity_show_location;
-import static ca.judacribz.catchbasinsurveillance.util.UI.*;
+import static ca.judacribz.mosquitomanager.R.layout.activity_catch_basin;
+import static ca.judacribz.mosquitomanager.util.UI.*;
 
-public class ShowLocation extends AppCompatActivity implements LocationListener {
+public class CatchBasin extends AppCompatActivity implements LocationListener {
 
     private static final int REQUEST_GEOLOCATION_PERMS = 1;
     private LocationManager locationManager;
@@ -55,7 +56,7 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitView(this, activity_show_location, R.string.login,  false);
+        setInitView(this, activity_catch_basin, R.string.login,  true);
 
         setDate();
         setSpinnerWithArray(this, R.array.life_stages, sprDevStage);
@@ -63,6 +64,14 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
 
         verifyGeolocationPermission();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return super.onSupportNavigateUp();
+    }
+
 
     private void setDate() {
         Date c = Calendar.getInstance().getTime();
@@ -175,12 +184,16 @@ public class ShowLocation extends AppCompatActivity implements LocationListener 
     public void showCoordinates() {
         if (   ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            onLocationChanged(lastKnownLocation);
-            lat = lastKnownLocation.getLatitude();
-            lon = lastKnownLocation.getLongitude();
 
-            updateUI(geocode(lat, lon));
+            if (locationManager != null) {
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                onLocationChanged(lastKnownLocation);
+                lat = lastKnownLocation.getLatitude();
+                lon = lastKnownLocation.getLongitude();
+                updateUI(geocode(lat, lon));
+            } else {
+                Toast.makeText(this, "No last known Location", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

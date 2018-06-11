@@ -1,7 +1,9 @@
-package ca.judacribz.catchbasinsurveillance;
+package ca.judacribz.mosquitomanager;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,18 +34,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static ca.judacribz.catchbasinsurveillance.R.layout.activity_main;
-import static ca.judacribz.catchbasinsurveillance.firebase.Authentication.*;
-import static ca.judacribz.catchbasinsurveillance.util.UI.setInitView;
+import static ca.judacribz.mosquitomanager.R.layout.activity_login;
+import static ca.judacribz.mosquitomanager.firebase.Authentication.*;
+import static ca.judacribz.mosquitomanager.util.UI.setInitView;
 
-public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
+public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
     // Constants
     // --------------------------------------------------------------------------------------------
     private static final int MIN_PASSWORD_LEN = 6;
+    private static final int SLIDE_DURATION = 1000;
+    private static final String LOGIN_IMG = "mosquito.png";
+    private static final String SIGN_UP_IMG = "exterminator.png";
 
     private FirebaseAuth auth;
     AuthCredential credential;
@@ -60,26 +68,53 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
     @BindView(R.id.tv_sign_up_quest) TextView tvLoginQuest;
     @BindView(R.id.tv_login_quest) TextView tvSignUpQuest;
 
-    @BindView(R.id.et_email)
-    EditText etEmail;
+    @BindView(R.id.et_email) EditText etEmail;
     @BindView(R.id.et_password) EditText etPassword;
 
-    @BindView(R.id.iv_login_image)
-    ImageView ivLoginImg;
+    @BindView(R.id.iv_login_image) ImageView ivLoginImg;
     @BindView(R.id.iv_sign_up_image) ImageView ivSignUpImg;
 
-    @BindView(R.id.btn_google_sign_in)
-    SignInButton btnGoogle;
-    @BindView(R.id.btn_login)
-    Button btnLogin;
+    @BindView(R.id.btn_google_sign_in) SignInButton btnGoogle;
+    @BindView(R.id.btn_login) Button btnLogin;
     @BindView(R.id.btn_sign_up) Button btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitView(this, activity_main, R.string.login,  false);
+        setInitView(this, activity_login, R.string.login,  false);
 
         setupSignInMethods();
+        setupMainImages();
+    }
+
+    private void setupSignInMethods() {
+        auth = FirebaseAuth.getInstance();
+
+        // Configure Google Sign In
+        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        signInClient = GoogleSignIn.getClient(this, signInOptions);
+
+
+    }
+
+    private void setupMainImages() {
+        AssetManager assetManager = getAssets();
+        try {
+            ivLoginImg.setImageBitmap(BitmapFactory.decodeStream(assetManager.open(LOGIN_IMG)));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            ivSignUpImg.setImageBitmap(BitmapFactory.decodeStream(assetManager.open(SIGN_UP_IMG)));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        slide_end = AnimationUtils.loadAnimation(this, R.anim.slide_end);
     }
 
     @Override
@@ -113,15 +148,11 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
         }
     }
 
-    private void setupSignInMethods() {
-        auth = FirebaseAuth.getInstance();
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        // Configure Google Sign In
-        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        signInClient = GoogleSignIn.getClient(this, signInOptions);
+        auth.removeAuthStateListener(this);
     }
 
     // FirebaseAuth.AuthStateListener Override
@@ -152,7 +183,7 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
                         });
             }
 
-            startActivity(new Intent(this, ShowLocation.class));
+            startActivity(new Intent(this, Menu.class));
             finish();
         }
     }
@@ -212,6 +243,7 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
             createUser(this, email, password, signInClient);
         }
     }
+
     @OnClick(R.id.tv_sign_up_here)
     public void signUpScreen() {
         animateView(btnSignUp, btnLogin, null);
@@ -240,7 +272,7 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
                 (float) Math.hypot(inView.getWidth(), inView.getHeight())
         );
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
-//        animator.setDuration(SLIDE_DURATION);
+        animator.setDuration(SLIDE_DURATION);
         animator.start();
 
 
@@ -248,11 +280,12 @@ public class Main extends AppCompatActivity implements FirebaseAuth.AuthStateLis
             slide_end.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+                    navTextView.setPadding(100,0, 0, 0);
+                    navTextView.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    navTextView.setVisibility(View.VISIBLE);
                 }
 
                 @Override

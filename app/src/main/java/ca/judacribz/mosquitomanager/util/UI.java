@@ -1,4 +1,4 @@
-package ca.judacribz.catchbasinsurveillance.util;
+package ca.judacribz.mosquitomanager.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 
-import ca.judacribz.catchbasinsurveillance.R;
+import ca.judacribz.mosquitomanager.R;
 
 public class UI {
 
@@ -33,7 +33,7 @@ public class UI {
      *
     <include
        android:id="@id/toolbar"
-       layout="@layout/partial_titlebar"/>
+       layout="@layout/part_titlebar"/>
      */
     public static void setInitView(Activity act, int layoutId, int titleId, boolean setBackArrow) {
         setInitView(act, layoutId, act.getResources().getString(titleId), setBackArrow);
@@ -69,7 +69,7 @@ public class UI {
         return setToolbar(act, act.getResources().getString(titleId), setBackArrow);
     }
     public static String setToolbar(AppCompatActivity act, String title, boolean setBackArrow) {
-        // Set the partial_titlebar to the activity
+        // Set the part_titlebar to the activity
         act.setSupportActionBar((Toolbar) act.findViewById(R.id.toolbar));
 
 
@@ -84,7 +84,7 @@ public class UI {
             }
         }
 
-        // Set the title for the partial_titlebar
+        // Set the title for the part_titlebar
         ((TextView) act.findViewById(R.id.title)).setText(title);
 
         return title;
