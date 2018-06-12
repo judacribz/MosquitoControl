@@ -11,6 +11,7 @@ public class CB {
     // --------------------------------------------------------------------------------------------
     private String samplingDate, community, cbAddress, stageOfDevelopment;
     private int numberOfLarvae;
+    private long id = -1;
     // --------------------------------------------------------------------------------------------
 
     // ######################################################################################### //
@@ -80,6 +81,13 @@ public class CB {
         this.numberOfLarvae = numberOfLarvae;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return this.id;
+    }
     // ============================================================================================
 
 

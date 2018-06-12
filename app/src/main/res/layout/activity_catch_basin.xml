@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:orientation="vertical"
     tools:context=".CatchBasin">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/part_titlebar" />
+
     <EditText
         android:id="@+id/et_samplingDate"
         android:layout_width="match_parent"

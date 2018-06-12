@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+import ca.judacribz.mosquitomanager.Login;
 import ca.judacribz.mosquitomanager.R;
 
 
@@ -57,6 +58,7 @@ public class Authentication {
                         Toast.makeText(act, msg, Toast.LENGTH_SHORT).show();
                         if (msg.equals(act.getString(R.string.txt_email_registered))) {
                             googleSignIn(act, signInClient);
+                            ((Login) act).linkGoogle = true;
                         }
                     }
                 });
@@ -74,10 +76,10 @@ public class Authentication {
                         // If sign in successful, handle in AuthStateListener in the activity
                         if (!task.isSuccessful()) {
                             String msg = getExceptionMsg(act, task.getException());
-
-                            if (msg.equals(act.getString(R.string.txt_email_registered))) {
-                                googleSignIn(act, signInClient);
-                            }
+//
+//                            if (msg.equals(act.getString(R.string.txt_email_registered))) {
+//                                googleSignIn(act, signInClient);
+//                            }
 
 
                             Toast.makeText(act, msg, Toast.LENGTH_SHORT).show();
@@ -85,6 +87,7 @@ public class Authentication {
                     }
                 });
     }
+
 
     public static void googleSignIn(Activity act, GoogleSignInClient signInClient) {
         Intent signInIntent = signInClient.getSignInIntent();

@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -63,7 +65,7 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitView(this, activity_catch_basin, R.string.login,  true);
+        setInitView(this, activity_catch_basin, R.string.catch_basin_surveillance,  true);
 
         forms = new EditText[]{etSamplingDate, etCity, etAddress, etNumLarvae};
         dataHelper = new DataHelper(this);
@@ -86,7 +88,7 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yy", Locale.CANADA);
+        SimpleDateFormat df = new SimpleDateFormat("yy-MM-dd", Locale.CANADA);
         String formattedDate = df.format(c);
         etSamplingDate.setText(formattedDate);
     }
@@ -168,6 +170,7 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+
         Address address;
         lat = location.getLatitude();
         lon = location.getLongitude();
@@ -188,6 +191,26 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu mainMenu) {
+        getMenuInflater().inflate(R.menu.menu_catch_basin, mainMenu);
+
+        return super.onCreateOptionsMenu(mainMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.act_view_data:
+                startActivity(new Intent(this, CatchBasinData.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @OnClick(R.id.btn_showCoords)
     public void showCoordinates() {
@@ -227,10 +250,11 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
                     getTextInt(forms[3]),
                     sprDevStage.getSelectedItem().toString()
             );
-            if (dataHelper.addWorkout(cb)) {
-                addCBFirebase(cb);
+            long id = dataHelper.addCatchBasin(cb);
+            if (id != -1) {
+                addCBFirebase(cb, id);
             } else {
-                Toast.makeText(this, "not Added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Not Added", Toast.LENGTH_SHORT).show();
             }
         }
     }

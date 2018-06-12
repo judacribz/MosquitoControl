@@ -37,8 +37,9 @@
         </activity>
         <activity
             android:name=".CatchBasin"
-            android:label="@string/catch_basin_surveillance"></activity>
-        <activity android:name=".Menu"></activity>
+            android:label="@string/catch_basin_surveillance" />
+        <activity android:name=".Menu" />
+        <activity android:name=".CatchBasinData"></activity>
     </application>
 
 </manifest>

@@ -21,9 +21,7 @@ public class Database {
     // Constants
     // --------------------------------------------------------------------------------------------
     private final static String EMAIL = "email";
-    private final static String USERNAME = "username";
     private final static String CATCH_BASIN = "catch_basin";
-    private final static String SETS = "sets";
 
     private final static String DEFAULT_WORKOUTS_PATH = "default_workouts";
     private static final String USER_PATH = "users/%s";
@@ -179,7 +177,7 @@ public class Database {
 //    }
 //
 //    /* Adds a workout under "users/<uid>/workouts/" */
-    public static void addCBFirebase(CB cb) {
-        getCatchBasinRef().push().setValue(cb.toMap());
+    public static void addCBFirebase(CB cb, long id) {
+        getCatchBasinRef().child(cb.getSamplingDate()).child(String.valueOf(id)).setValue(cb.toMap());
     }
 }

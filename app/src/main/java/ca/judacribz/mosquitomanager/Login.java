@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     GoogleSignInOptions signInOptions;
     GoogleSignInClient signInClient;
 
-    boolean linkGoogle;
+    public boolean linkGoogle = false;
     String email, password;
     Animation slide_end;
 
@@ -180,6 +180,9 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Login.this, "Linked!", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }
@@ -231,7 +234,8 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
         if (validateForm(email, password)) {
 
             // Email/Password login to firebase
-            signIn(this, EmailAuthProvider.getCredential(email, password), signInClient);
+            credential = EmailAuthProvider.getCredential(email, password);
+            signIn(this, credential, signInClient);
         }
     }
     @OnClick(R.id.btn_sign_up)
@@ -239,7 +243,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
         if (validateForm(email, password)) {
-
+            credential = EmailAuthProvider.getCredential(email, password);
             // Email/Password sign up in firebase
             createUser(this, email, password, signInClient);
         }

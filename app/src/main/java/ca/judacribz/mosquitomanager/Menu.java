@@ -20,6 +20,8 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInitView(this, R.layout.activity_menu, R.string.app_name,  false);
+
+        btnCatchBasin.setText(R.string.catchBasin);
     }
 
     @OnClick(R.id.btn_catch_basin)
