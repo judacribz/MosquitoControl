@@ -219,6 +219,8 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
 
             if (locationManager != null) {
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation == null)
+                     lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 onLocationChanged(lastKnownLocation);
                 lat = lastKnownLocation.getLatitude();
                 lon = lastKnownLocation.getLongitude();
