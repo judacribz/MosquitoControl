@@ -89,10 +89,8 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
     @Override
     public boolean onSupportNavigateUp() {
         finish();
-
         return super.onSupportNavigateUp();
     }
-
 
     private void setDate() {
         Date c = Calendar.getInstance().getTime();

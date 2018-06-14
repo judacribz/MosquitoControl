@@ -124,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tv_sign_up_quest"
+            android:paddingStart="100px"
             android:textColor="@drawable/selector_link_text"
             android:text="@string/txt_sign_up_here"
             android:textSize="15sp"/>
@@ -152,6 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tv_login_quest"
+            android:paddingStart="100px"
             android:textColor="@drawable/selector_link_text"
             android:text="@string/txt_login_here"
             android:textSize="15sp"

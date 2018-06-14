@@ -39,6 +39,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static ca.judacribz.mosquitomanager.Menu.EXTRA_LOGOUT_USER;
 import static ca.judacribz.mosquitomanager.R.layout.activity_login;
 import static ca.judacribz.mosquitomanager.firebase.Authentication.*;
 import static ca.judacribz.mosquitomanager.firebase.Database.setUserInfo;
@@ -49,9 +50,8 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     // Constants
     // --------------------------------------------------------------------------------------------
     private static final int MIN_PASSWORD_LEN = 6;
-    private static final int SLIDE_DURATION = 1000;
-    private static final String LOGIN_IMG = "mosquito.png";
-    private static final String SIGN_UP_IMG = "exterminator.png";
+    private static final String LOGIN_IMG = "exterminator.png";
+    private static final String SIGN_UP_IMG = "mosquito.png";
 
     private FirebaseAuth auth;
     AuthCredential credential;
@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitView(this, activity_login, R.string.login,  false);
+        setInitView(this, activity_login, R.string.app_name,  false);
 
         setupSignInMethods();
         setupMainImages();
@@ -121,7 +121,9 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     @Override
     protected void onStart() {
         super.onStart();
-
+        if (getIntent().getBooleanExtra(EXTRA_LOGOUT_USER, false)) {
+            signOut(this, signInClient);
+        }
         auth.addAuthStateListener(this);
     }
 
@@ -253,7 +255,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     public void signUpScreen() {
         animateView(btnSignUp, btnLogin, null);
         animateView(ivSignUpImg, ivLoginImg, null);
-        animateView(tvLoginQuest, tvSignUpQuest, tvLoginHere);
+        animateView(tvSignUpQuest, tvLoginQuest, tvLoginHere);
         tvSignUpHere.setVisibility(View.INVISIBLE);
     }
 
@@ -261,7 +263,7 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
     public void loginScreen() {
         animateView(btnLogin, btnSignUp, null);
         animateView(ivLoginImg, ivSignUpImg, null);
-        animateView(tvSignUpQuest, tvLoginQuest, tvSignUpHere);
+        animateView(tvLoginQuest, tvSignUpQuest, tvSignUpHere);
         tvLoginHere.setVisibility(View.INVISIBLE);
     }
 
@@ -277,7 +279,6 @@ public class Login extends AppCompatActivity implements FirebaseAuth.AuthStateLi
                 (float) Math.hypot(inView.getWidth(), inView.getHeight())
         );
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.setDuration(SLIDE_DURATION);
         animator.start();
 
 

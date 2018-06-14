@@ -1,7 +1,6 @@
 package ca.judacribz.mosquitomanager;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -10,11 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.supercsv.cellprocessor.constraint.NotNull;
@@ -40,6 +36,9 @@ import static ca.judacribz.mosquitomanager.util.UI.setSpinnerWithArray;
 public class CatchBasinData extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_WRITE_EXT_STORAGE = 10101;
+    private static final String D_NAME = "mosquito_manager";
+    private static final String F_NAME = "catchBasin_%s.csv";
+
     ArrayList<CB> cbs;
     ArrayList<String> dates;
     DataHelper dataHelper;
@@ -58,24 +57,14 @@ public class CatchBasinData extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitView(this, R.layout.activity_catch_basin_data, R.string.recorded_catch_basins,  false);
+        setInitView(this, R.layout.activity_catch_basin_data, R.string.recorded_catch_basins, true);
 
         dataHelper = new DataHelper(this);
 
         dates = dataHelper.getAllDates();
         setSpinnerWithArray(this, dates, sprDate);
 
-        View view  = findViewById(R.id.list_header);
-        ((TextView)view.findViewById(R.id.tvId)).setText("id");
-        ((TextView)view.findViewById(R.id.tvCommunity)).setText("Community");
-        ((TextView)view.findViewById(R.id.tvCBAddress)).setText("CB Address");
-        ((TextView)view.findViewById(R.id.tvNumLarvae)).setText("# Larvae");
-        ((TextView)view.findViewById(R.id.tvStageOfDev)).setText("Stage of Dev");
-
         cbData = new HashMap<>();
-//        File main = new File(Environment.getExternalStorageDirectory() + "/mosquito");
-//
-//        main.mkdir();
 
         sprDate.setSelection(dates.size()-1);
     }
@@ -93,38 +82,34 @@ public class CatchBasinData extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.act_create_spreadsheet:
 
-                // Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED) {
 
                     // Permission is not granted
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        // Show an explanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )) {
 
                         Toast.makeText(this, "Need storage permission to create CSV data file", Toast.LENGTH_SHORT).show();
                     } else {
-                        // No explanation needed; request the permission
+                        // Request the permission
                         ActivityCompat.requestPermissions(this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 PERMISSION_REQUEST_WRITE_EXT_STORAGE);
-
-                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
                     }
                 } else {
-                    for (CB cb : cbs) {
-                        cbData.put(CATCH_BASIN_HEADERS[0], cb.getCommunity());
-                        cbData.put(CATCH_BASIN_HEADERS[1], cb.getCbAddress());
-                        cbData.put(CATCH_BASIN_HEADERS[2], cb.getNumberOfLarvae());
-                        cbData.put(CATCH_BASIN_HEADERS[3], cb.getStageOfDevelopment());
+                    File rootPath = new File(Environment.getExternalStorageDirectory(), D_NAME);
+                    if(!rootPath.exists()) {
+                        //noinspection ResultOfMethodCallIgnored
+                        rootPath.mkdirs();
+                    }
 
-                        writeDataToCSV();
+                    desFile = new File(rootPath, String.format(F_NAME, currDate));
+                    if (desFile.delete()) {
+                        writeDataToCSV(desFile);
                     }
                 }
 
@@ -133,24 +118,29 @@ public class CatchBasinData extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void writeDataToCSV() {
+    /* Write to csv file */
+    private void writeDataToCSV(File desFile) {
+        final CellProcessor[] processors = new CellProcessor[] {
+                new NotNull(),
+                new NotNull(),
+                new NotNull(),
+                new NotNull()
+        };
         ICsvMapWriter mapWriter = null;
-
-        desFile = new File(Environment.getExternalStorageDirectory() + "/catchBasin_" + currDate + ".csv");
-        if (desFile.delete()) {
-        }
 
         try {
             mapWriter = new CsvMapWriter(new FileWriter(desFile, true), CsvPreference.EXCEL_PREFERENCE);
+            mapWriter.writeHeader(CATCH_BASIN_HEADERS);
 
-            final CellProcessor[] processors = getProcessors();
+            for (CB cb : cbs) {
+                cbData.put(CATCH_BASIN_HEADERS[0], cb.getCommunity());
+                cbData.put(CATCH_BASIN_HEADERS[1], cb.getCbAddress());
+                cbData.put(CATCH_BASIN_HEADERS[2], cb.getNumberOfLarvae());
+                cbData.put(CATCH_BASIN_HEADERS[3], cb.getStageOfDevelopment());
 
-            if (!fileExists) {
-                mapWriter.writeHeader(CATCH_BASIN_HEADERS);
-                fileExists = true;
+                mapWriter.write(cbData, CATCH_BASIN_HEADERS, processors);
             }
 
-            mapWriter.write(cbData, CATCH_BASIN_HEADERS, processors);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -162,10 +152,12 @@ public class CatchBasinData extends AppCompatActivity {
                 }
             }
         }
-    }
+     }
 
-    private CellProcessor[] getProcessors() {
-        return new CellProcessor[] { new NotNull(), new NotNull(), new NotNull(), new NotNull()};
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
     @OnItemSelected(R.id.spr_date)

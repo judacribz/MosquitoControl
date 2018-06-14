@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:text="@string/id"
         android:textAlignment="center"
         android:textColor="@color/colorText"/>
 
@@ -20,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        android:text="@string/community"
         android:textColor="@color/colorText"/>
 
     <TextView
@@ -27,6 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        android:text="@string/cb_address"
         android:textAlignment="center"
         android:textColor="@color/colorText"/>
 
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:textAlignment="center"
+        android:text="@string/num_of_larvae"
         android:textColor="@color/colorText" />
 
     <TextView
@@ -44,5 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:textAlignment="center"
+        android:text="@string/stage_of_dev"
         android:textColor="@color/colorText"/>
 </LinearLayout>

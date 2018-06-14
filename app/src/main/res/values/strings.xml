@@ -5,6 +5,10 @@
     <string name="login">login</string>
     <string name="sign_up">Sign Up</string>
 
+    <string name="id">id</string>
+    <string name="community">Community</string>
+    <string name="cb_address">CB Address</string>
+    <string name="stage_of_dev">Stage of Dev</string>
     <string name="date">Date</string>
     <string name="city">City</string>
     <string name="address">Address</string>
@@ -48,12 +52,15 @@
     <string name="txt_email_registered">Email is already registered</string>
     <string name="txt_network_needed">Internet connection required</string>
     <string name="txt_logged_in">Logged in with %s</string>
+
     <string name="zero">0</string>
     <string name="add_data">Add Data</string>
     <string name="comma">,</string>
-    <string name="catchBasin">Catch Basin</string>
+    <string name="catch_basin">Catch Basin</string>
     <string name="view_data">View Data</string>
     <string name="recorded_catch_basins">Recorded Catch Basins</string>
     <string name="create_spreadsheet">Create Spreadsheet</string>
+    <string name="logout">Logout</string>
+
 
 </resources>
