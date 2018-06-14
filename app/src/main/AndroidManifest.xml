@@ -39,9 +39,10 @@
         </activity>
         <activity
             android:name=".CatchBasin"
-            android:label="@string/catch_basin_surveillance" />
+            android:label="@string/catch_basin_surveillance"
+            android:theme="@style/CatchBasinTheme"/>
         <activity android:name=".Menu" />
-        <activity android:name=".CatchBasinData"></activity>
+        <activity android:name=".CatchBasinData"/>
     </application>
 
 </manifest>

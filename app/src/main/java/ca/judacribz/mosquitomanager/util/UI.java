@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 
 import ca.judacribz.mosquitomanager.R;
@@ -92,7 +95,6 @@ public class UI {
 
     /* Sets the spinner with the given array resource in the Activity */
     public static void setSpinnerWithArray(Activity act, int arrResId, Spinner spr) {
-
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(act,
                         arrResId,
@@ -100,6 +102,15 @@ public class UI {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spr.setAdapter(adapter);
     }
+
+    /* Sets the spinner with the given array resource in the Activity */
+    public static void setSpinnerWithArray(Activity act, ArrayList<String> strArr, Spinner spr) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(act, android.R.layout.simple_list_item_1, strArr);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spr.setAdapter(adapter);
+    }
+
+
 
     /* Gets string value from EditText element */
     public static String getTextString(EditText et) {

@@ -1,6 +1,7 @@
 package ca.judacribz.mosquitomanager.firebase;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import ca.judacribz.mosquitomanager.models.CB;
+import ca.judacribz.mosquitomanager.models.DataHelper;
 import ca.judacribz.mosquitomanager.models.User;
 
 public class Database {
@@ -76,6 +78,8 @@ public class Database {
                             .setValue(email);
 
                     }
+
+                    getFirebaseData(act);
                 }
 
                 @Override
@@ -85,17 +89,36 @@ public class Database {
         }
     }
 
-    /* Gets workouts from firebase db under 'default_workouts/' and adds it to
-     * 'users/<uid>/workouts/' */
-    public static void copyDefaultWorkoutsFirebase() {
-        DatabaseReference defaultRef = FirebaseDatabase.getInstance().getReference(
-                DEFAULT_WORKOUTS_PATH
-        );
 
-        defaultRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    /* Gets all workouts from firebase db from 'users/<uid>/workouts/' and if the local db is
+     * missing any workouts, those ones are added */
+    public static void getFirebaseData(final Activity act) {
+
+        getCatchBasinRef().addChildEventListener(new ChildEventListener() {
+            DataHelper dataHelper = new DataHelper(act);
+
+            ArrayList<CB> cbs = new ArrayList<>();
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                getCatchBasinRef().setValue(dataSnapshot.getValue());
+            public void onChildAdded(DataSnapshot cbShot, String s) {
+                for (DataSnapshot cbEntry : cbShot.getChildren()) {
+                    dataHelper.addCatchBasin(cbEntry.getValue(CB.class));
+//                    Toast.makeText(act, "" + cbEntry.getValue(), Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
             }
 
             @Override
@@ -103,78 +126,6 @@ public class Database {
             }
         });
     }
-
-//
-//    /* Gets all workouts from firebase db from 'users/<uid>/workouts/' and if the local db is
-//     * missing any workouts, those ones are added */
-//    public static void getWorkoutsFirebase(final Activity act) {
-//
-//        getCatchBasinRef().addChildEventListener(new ChildEventListener() {
-//            WorkoutHelper workoutHelper = new WorkoutHelper(act);
-//
-//            ArrayList<String> workoutNames = workoutHelper.getAllWorkoutNames();
-//            ArrayList<Exercise> exercises;
-//            ArrayList<Set> sets;
-//
-//            Exercise exercise;
-//            Set set;
-//            String workoutName;
-//
-//            @Override
-//            public void onChildAdded(DataSnapshot workoutShot, String s) {
-//
-//                workoutName = workoutShot.getKey();
-//                if (!workoutNames.contains(workoutName)) {
-//
-//                    exercises = new ArrayList<>();
-//                    for (DataSnapshot exerciseShot : workoutShot.getChildren()) {
-//
-//                        // Add set to sets list
-//                        sets = new ArrayList<>();
-//                        for (DataSnapshot setShot : exerciseShot.child(SETS).getChildren()) {
-//                            set = setShot.getValue(Set.class);
-//
-//                            if (set != null) {
-//                                set.setSetNumber(Integer.valueOf(setShot.getKey()));
-//
-//                                sets.add(set);
-//                            }
-//                        }
-//
-//                        // Adds sets to exercise object, and add exercise to exercises list
-//                        exercise = exerciseShot.getValue(Exercise.class);
-//                        if (exercise != null) {
-//                            exercise.setName(exerciseShot.getKey());
-//                            exercise.setSets(sets);
-//
-//                            exercises.add(exercise);
-//                        }
-//                    }
-//
-//                    Workout workout = new Workout(workoutShot.getKey(), exercises);
-//
-//                    // Add workout name and exercises list to workouts list
-//                    workoutHelper.addWorkout(workout);
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        });
-//    }
 //
 //    /* Adds a workout under "users/<uid>/workouts/" */
     public static void addCBFirebase(CB cb, long id) {

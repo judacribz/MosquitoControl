@@ -10,5 +10,4 @@
         android:orderInCategory="1"
         android:title="@string/view_data"
         app:showAsAction="never"/>
-
 </menu>

@@ -93,6 +93,10 @@ public class DataHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CB> cbs = new ArrayList<>();
 
+        if (email == null) {
+            email = User.getInstance().getEmail();
+        }
+
         String[] column      = new String[] {"rowid", SAMPLING_DATE, COMMUNITY, CB_ADDRESS, NUMBER_OF_LARVAE, STAGE_OF_DEVELOPMENT};
         String where         = EMAIL + " = ?";
         String[] whereArgs   = new String[] {email};
@@ -113,4 +117,58 @@ public class DataHelper extends SQLiteOpenHelper {
         return cbs;
     }
 
+    public ArrayList<String> getAllDates() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> dates = new ArrayList<>();
+
+        if (email == null) {
+            email = User.getInstance().getEmail();
+        }
+
+        String[] column      = new String[] {SAMPLING_DATE};
+        String where         = EMAIL + " = ?";
+        String[] whereArgs   = new String[] {email};
+
+        Cursor cursor = db.query(true, TABLE_CATCH_BASIN, column, where, whereArgs, "rowid", null, null, null);
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                dates.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dates;
+    }
+
+    /* Gets all workouts in the db and returns a list of Workout objects
+     */
+    public ArrayList<CB> getCatchBasinsForDate(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<CB> cbs = new ArrayList<>();
+
+        if (email == null) {
+            email = User.getInstance().getEmail();
+        }
+
+        String[] column      = new String[] {"rowid", SAMPLING_DATE, COMMUNITY, CB_ADDRESS, NUMBER_OF_LARVAE, STAGE_OF_DEVELOPMENT};
+        String where         = EMAIL + " = ? AND " + SAMPLING_DATE + " = ?";
+        String[] whereArgs   = new String[] {email, date};
+
+        Cursor cursor = db.query(TABLE_CATCH_BASIN, column, where, whereArgs, "rowid", null, null, null);
+
+
+        if (cursor.moveToFirst()) {
+            CB cb;
+            do {
+                cb = new CB(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5));
+                cb.setId(cursor.getLong(0));
+                cbs.add(cb);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return cbs;
+    }
 }

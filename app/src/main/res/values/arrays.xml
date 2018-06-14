@@ -2,10 +2,10 @@
 <resources>
     <string-array name="life_stages">
         <item>-- N/A --</item>
-        <item>1st Instar-</item>
-        <item>2nd Instar-</item>
-        <item>3rd Instar-</item>
-        <item>4th Instar-</item>
+        <item>1st Instar</item>
+        <item>2nd Instar</item>
+        <item>3rd Instar</item>
+        <item>4th Instar</item>
         <item>Pupae</item>
     </string-array>
 </resources>

@@ -12,9 +12,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -62,10 +64,18 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
     @BindView(R.id.spr_devStage)
     Spinner sprDevStage;
 
+    @BindView(R.id.btn_addData)
+    Button btnAddData;
+    @BindView(R.id.btn_showCoords)
+    Button btnShowCoords;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInitView(this, activity_catch_basin, R.string.catch_basin_surveillance,  true);
+
+        btnAddData.setText(R.string.add_data);
+        btnShowCoords.setText(R.string.update_location_info);
 
         forms = new EditText[]{etSamplingDate, etCity, etAddress, etNumLarvae};
         dataHelper = new DataHelper(this);
@@ -221,10 +231,13 @@ public class CatchBasin extends AppCompatActivity implements LocationListener {
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation == null)
                      lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                onLocationChanged(lastKnownLocation);
-                lat = lastKnownLocation.getLatitude();
-                lon = lastKnownLocation.getLongitude();
-                updateUI(geocode(lat, lon));
+
+                if (lastKnownLocation != null) {
+                    onLocationChanged(lastKnownLocation);
+                    lat = lastKnownLocation.getLatitude();
+                    lon = lastKnownLocation.getLongitude();
+                    updateUI(geocode(lat, lon));
+                }
             } else {
                 Toast.makeText(this, "No last known Location", Toast.LENGTH_SHORT).show();
             }

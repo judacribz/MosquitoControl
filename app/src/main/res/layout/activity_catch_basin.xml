@@ -15,41 +15,46 @@
         android:id="@+id/et_samplingDate"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="date"
-        android:hint="@string/date"/>
+        android:layout_margin="5dp"
+        android:hint="@string/date"
+        android:inputType="date"/>
 
     <EditText
         android:id="@+id/et_city"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="text"
-        android:hint="@string/city"/>
+        android:layout_margin="5dp"
+        android:hint="@string/city"
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/et_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="text"
-        android:hint="@string/address"/>
+        android:layout_margin="5dp"
+        android:hint="@string/address"
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/et_lat"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="numberDecimal"
-        android:hint="@string/latitude"/>
-
+        android:layout_margin="5dp"
+        android:hint="@string/latitude"
+        android:inputType="numberDecimal"/>
     <EditText
         android:id="@+id/et_lon"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="numberDecimal"
-        android:hint="@string/longitude"/>
+        android:layout_margin="5dp"
+        android:hint="@string/longitude"
+        android:inputType="numberDecimal"/>
 
     <EditText
         android:id="@+id/et_numLarvae"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_margin="5dp"
         android:inputType="number"
         android:text="@string/zero"
         android:hint="@string/num_of_larvae"/>
@@ -58,18 +63,23 @@
         android:id="@+id/spr_devStage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_margin="5dp"
         android:inputType="date"
         android:textColor="@color/colorText" />
 
-    <Button
-        android:id="@+id/btn_showCoords"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/update_location_info"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_addData"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/add_data"/>
+        <include
+            android:id="@+id/btn_showCoords"
+            android:text="@string/update_location_info"
+            layout="@layout/part_button" />
+
+        <include
+            android:id="@+id/btn_addData"
+            layout="@layout/part_button"
+            android:text="@string/add_data"/>
+    </LinearLayout>
 </LinearLayout>

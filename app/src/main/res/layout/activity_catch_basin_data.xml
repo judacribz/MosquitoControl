@@ -12,6 +12,11 @@
         android:id="@+id/toolbar"
         layout="@layout/part_titlebar"/>
 
+    <Spinner
+        android:id="@+id/spr_date"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
     <include
         android:id="@+id/list_header"
         android:layout_width="match_parent"
