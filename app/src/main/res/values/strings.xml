@@ -61,6 +61,7 @@
     <string name="recorded_catch_basins">Recorded Catch Basins</string>
     <string name="create_spreadsheet">Create Spreadsheet</string>
     <string name="logout">Logout</string>
+    <string name="err_ext_storage_permission">Need storage permission to create CSV data file</string>
 
 
 </resources>

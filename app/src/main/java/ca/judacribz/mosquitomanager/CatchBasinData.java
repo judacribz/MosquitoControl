@@ -93,7 +93,7 @@ public class CatchBasinData extends AppCompatActivity {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                         )) {
 
-                        Toast.makeText(this, "Need storage permission to create CSV data file", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.err_ext_storage_permission, Toast.LENGTH_SHORT).show();
                     } else {
                         // Request the permission
                         ActivityCompat.requestPermissions(this,
@@ -108,9 +108,10 @@ public class CatchBasinData extends AppCompatActivity {
                     }
 
                     desFile = new File(rootPath, String.format(F_NAME, currDate));
-                    if (desFile.delete()) {
-                        writeDataToCSV(desFile);
-                    }
+
+                    //noinspection ResultOfMethodCallIgnored
+                    desFile.delete();
+                    writeDataToCSV(desFile);
                 }
 
                 break;
